@@ -1,7 +1,7 @@
 {
-    "name": "windy-plugin-template",
-    "version": "4.2.2",
-    "description": "Template for developing Windy Plugins",
+    "name": "windy-plugin-tide-predictions",
+    "version": "0.1.0",
+    "description": "NOAA tide predictions with current conditions (water/air temp, water level, currents, wind) for stations in view.",
     "main": "dist/plugin.min.js",
     "type": "module",
     "scripts": {
@@ -20,20 +20,36 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/windycom/windy-plugin-template.git"
+        "url": "git+https://github.com/scottobert/windy-plugin-tide-predictions.git"
     },
     "keywords": [
         "windy",
         "windy.com",
         "plugins"
     ],
-    "author": "Windyty, S.E.",
+    "author": "Scott Obert",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/windycom/windy-plugin-template/issues"
+        "url": "https://github.com/scottobert/windy-plugin-tide-predictions/issues"
     },
-    "homepage": "https://docs.windy-plugins.com/",
+    "homepage": "https://github.com/scottobert/windy-plugin-tide-predictions#readme",
+    "keywords": [
+        "windy",
+        "windy.com",
+        "plugins",
+        "tides",
+        "noaa",
+        "currents",
+        "weather"
+    ],
+    "files": [
+        "dist"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
     "dependencies": {
-        "@windycom/plugin-devtools": "^3.0.1"
+        "@windycom/plugin-devtools": "^3.0.2",
+        "d3": "^7.9.0"
     }
 }
