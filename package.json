@@ -1,6 +1,6 @@
 {
     "name": "windy-plugin-tide-predictions",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "NOAA tide predictions with current conditions (water/air temp, water level, currents, wind) for stations in view.",
     "main": "dist/plugin.min.js",
     "type": "module",
