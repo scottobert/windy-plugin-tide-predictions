@@ -34,8 +34,8 @@ export const parseStationsResponse = (response: any): TideStation[] => {
     return response.stations.map((station: any) => ({
         id: station.id,
         name: station.name,
-        lat: parseFloat(station.lat),
-        lon: parseFloat(station.lng),
+        lat: Number.parseFloat(station.lat),
+        lon: Number.parseFloat(station.lng),
         stationType: station.type,
     }));
 };

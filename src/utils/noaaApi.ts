@@ -18,6 +18,7 @@ export const fetchStationsInBounds = async (
         return data.stations || [];
     } catch (error) {
         // Return empty on error to keep UI resilient
+        console.error('Error fetching stations:', error);
         return [];
     }
 };
@@ -36,6 +37,7 @@ export const fetchTidePredictions = async (
         const data = await response.json();
         return data.predictions || [];
     } catch (error) {
+        console.error('Error fetching tide predictions:', error);
         return [];
     }
 };

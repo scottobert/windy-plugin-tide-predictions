@@ -6,6 +6,7 @@ export const loadFavorites = (): string[] => {
         return stored ? JSON.parse(stored) : [];
     } catch (error) {
         // Swallow parsing errors; return empty
+        console.error('Error loading favorites from localStorage:', error);
         return [];
     }
 };
@@ -15,6 +16,7 @@ export const saveFavorites = (favorites: string[]): void => {
         localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
     } catch (error) {
         // Ignore storage errors in this context
+        console.error('Error saving favorites to localStorage:', error);
     }
 };
 
