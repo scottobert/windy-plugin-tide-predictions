@@ -2,6 +2,12 @@
 
 A Windy.com plugin that displays NOAA tide predictions and current water conditions for tide stations across the United States. View tide predictions, water levels, temperatures, currents, and wind conditions directly on the Windy map.
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=scottobert_windy-plugin-tide-predictions&metric=alert_status)](https://sonarcloud.io/dashboard?id=scottobert_windy-plugin-tide-predictions)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=scottobert_windy-plugin-tide-predictions&metric=coverage)](https://sonarcloud.io/dashboard?id=scottobert_windy-plugin-tide-predictions)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=scottobert_windy-plugin-tide-predictions&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=scottobert_windy-plugin-tide-predictions)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=scottobert_windy-plugin-tide-predictions&metric=security_rating)](https://sonarcloud.io/dashboard?id=scottobert_windy-plugin-tide-predictions)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=scottobert_windy-plugin-tide-predictions&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=scottobert_windy-plugin-tide-predictions)
+
 ## Features
 
 - 🌊 **Tide Predictions**: View upcoming high and low tide times and heights
@@ -70,6 +76,17 @@ All tide data is provided by NOAA and is free for public use.
 - **Windows**: `npm run build:win`
 - **macOS/Linux**: `npm run build`
 - Output: `dist/plugin.min.js` plus `package.json`
+
+#### Testing
+
+Run the test suite:
+```bash
+npm test              # Run all tests
+npm run test:ui       # Run with UI dashboard
+npm run test:coverage # Generate coverage report
+```
+
+See [TESTING.md](TESTING.md) for testing documentation and [COVERAGE.md](COVERAGE.md) for coverage reporting.
 
 ## User Guide
 

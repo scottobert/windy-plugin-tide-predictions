@@ -16,23 +16,14 @@
         "example06": "CONFIG=example06 rollup -w -c",
         "example07": "CONFIG=example07 rollup -w -c",
         "build:all-examples": "for number in 01 02 03 04 05 06; do CONFIG=example$number SERVE=false rollup -c; done",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "vitest",
+        "test:ui": "vitest --ui",
+        "test:coverage": "vitest --coverage"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/scottobert/windy-plugin-tide-predictions.git"
     },
-    "keywords": [
-        "windy",
-        "windy.com",
-        "plugins"
-    ],
-    "author": "Scott Obert",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/scottobert/windy-plugin-tide-predictions/issues"
-    },
-    "homepage": "https://github.com/scottobert/windy-plugin-tide-predictions#readme",
     "keywords": [
         "windy",
         "windy.com",
@@ -42,6 +33,12 @@
         "currents",
         "weather"
     ],
+    "author": "Scott Obert",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/scottobert/windy-plugin-tide-predictions/issues"
+    },
+    "homepage": "https://github.com/scottobert/windy-plugin-tide-predictions#readme",
     "files": [
         "dist"
     ],
@@ -51,5 +48,13 @@
     "dependencies": {
         "@windycom/plugin-devtools": "^3.0.2",
         "d3": "^7.9.0"
+    },
+    "devDependencies": {
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/svelte": "^5.2.9",
+        "@vitest/coverage-v8": "^4.0.15",
+        "@vitest/ui": "^4.0.15",
+        "jsdom": "^27.3.0",
+        "vitest": "^4.0.15"
     }
 }
