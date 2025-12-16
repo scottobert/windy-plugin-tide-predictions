@@ -8,7 +8,9 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*.{ts,js,svelte}'],
       exclude: [
+        'src/__tests__/**',
         'node_modules/',
         'dist/',
         'examples/',

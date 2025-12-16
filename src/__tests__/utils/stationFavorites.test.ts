@@ -1,50 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { isFavorite, loadFavorites, saveFavorites, toggleFavorite } from '../../utils/favorites';
 
 const FAVORITES_STORAGE_KEY = 'windy-tide-favorites';
-const DEFAULT_FILTER_STORAGE_KEY = 'windy-tide-default-filter';
-
-/**
- * Load favorite stations from localStorage
- */
-export const loadFavorites = (): string[] => {
-  try {
-    const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (error) {
-    console.error('Error loading favorites:', error);
-    return [];
-  }
-};
-
-/**
- * Save favorite stations to localStorage
- */
-export const saveFavorites = (favorites: string[]): void => {
-  try {
-    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
-  } catch (error) {
-    console.error('Error saving favorites:', error);
-  }
-};
-
-/**
- * Toggle a station in favorites
- */
-export const toggleFavorite = (stationId: string, favorites: string[]): string[] => {
-  const index = favorites.indexOf(stationId);
-  if (index > -1) {
-    return favorites.filter(id => id !== stationId);
-  } else {
-    return [...favorites, stationId];
-  }
-};
-
-/**
- * Check if a station is in favorites
- */
-export const isFavorite = (stationId: string, favorites: string[]): boolean => {
-  return favorites.includes(stationId);
-};
 
 describe('Favorites Management', () => {
   beforeEach(() => {

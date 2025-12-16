@@ -1,20 +1,5 @@
 import { describe, it, expect } from 'vitest';
-
-/**
- * Utility function to format time strings
- * @param dateString ISO date string
- * @returns Formatted time string
- */
-export const formatTime = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true
-  });
-};
+import { formatTime } from '../../utils/formatters';
 
 describe('formatTime', () => {
   it('should format ISO date string correctly', () => {

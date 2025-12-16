@@ -1,54 +1,5 @@
 import { describe, it, expect } from 'vitest';
-
-interface TideStation {
-  id: string;
-  name: string;
-  lat: number;
-  lon: number;
-  stationType?: string;
-}
-
-type StationFilter = 'all' | 'primary' | 'subordinate' | 'favorites';
-
-/**
- * Filter stations based on filter type
- */
-export const filterStations = (
-  stations: TideStation[],
-  filterType: StationFilter,
-  favorites: string[] = []
-): TideStation[] => {
-  switch (filterType) {
-    case 'primary':
-      return stations.filter(s => s.stationType === 'R');
-    case 'subordinate':
-      return stations.filter(s => s.stationType === 'S');
-    case 'favorites':
-      return stations.filter(s => favorites.includes(s.id));
-    case 'all':
-    default:
-      return stations;
-  }
-};
-
-/**
- * Parse NOAA stations API response
- */
-export const parseStationsResponse = (
-  response: any
-): TideStation[] => {
-  if (!response.stations || !Array.isArray(response.stations)) {
-    return [];
-  }
-
-  return response.stations.map((station: any) => ({
-    id: station.id,
-    name: station.name,
-    lat: parseFloat(station.lat),
-    lon: parseFloat(station.lng),
-    stationType: station.type,
-  }));
-};
+import { filterStations, parseStationsResponse, TideStation } from '../utils/stations';
 
 describe('Station Filtering', () => {
   const mockStations: TideStation[] = [

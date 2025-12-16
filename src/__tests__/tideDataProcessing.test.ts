@@ -1,53 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-
-interface TideData {
-  type: 'H' | 'L';
-  time: string;
-  height: string;
-}
-
-/**
- * Parse NOAA predictions response
- */
-export const parsePredictions = (response: any): TideData[] => {
-  if (!response.predictions || !Array.isArray(response.predictions)) {
-    return [];
-  }
-
-  return response.predictions.map((p: any) => ({
-    type: p.type as 'H' | 'L',
-    time: p.t,
-    height: p.v,
-  }));
-};
-
-/**
- * Get the next N high/low tides
- */
-export const getNextTides = (
-  tideData: TideData[],
-  count: number = 4
-): TideData[] => {
-  const now = new Date();
-  return tideData
-    .filter(tide => new Date(tide.time) >= now)
-    .slice(0, count);
-};
-
-/**
- * Calculate tide height range
- */
-export const getTideRange = (tideData: TideData[]): { min: number; max: number } => {
-  if (tideData.length === 0) {
-    return { min: 0, max: 0 };
-  }
-
-  const heights = tideData.map(t => parseFloat(t.height));
-  return {
-    min: Math.min(...heights),
-    max: Math.max(...heights),
-  };
-};
+import { describe, it, expect } from 'vitest';
+import { getNextTides, getTideRange, parsePredictions, TideData } from '../utils/tides';
 
 describe('Tide Data Processing', () => {
   describe('parsePredictions', () => {
