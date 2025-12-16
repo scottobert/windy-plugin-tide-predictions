@@ -177,16 +177,17 @@
     import { onDestroy, onMount } from 'svelte';
     import config from './pluginConfig';
     import TideChart from './TideChart.svelte';
+    import { formatTime } from './utils/formatters';
+    import { getNextTides } from './utils/tides';
+    import { filterStations, type StationFilter, type TideStation } from './utils/stations';
+    import {
+        isFavorite as isFavoriteUtil,
+        loadFavorites as loadFavoritesStore,
+        saveFavorites as saveFavoritesStore,
+        toggleFavorite as toggleFavoriteUtil,
+    } from './utils/favorites';
 
     const { title } = config;
-
-    interface TideStation {
-        id: string;
-        name: string;
-        lat: number;
-        lon: number;
-        stationType?: string;
-    }
 
     interface StationMetadata {
         state?: string;
@@ -232,8 +233,6 @@
         }>;
     }
 
-    type StationFilter = 'all' | 'primary' | 'subordinate' | 'favorites';
-
     let markers: L.Marker[] = [];
     let selectedStation: TideStation | null = null;
     let stationMetadata: StationMetadata | null = null;
@@ -252,30 +251,10 @@
     let favoriteStations: string[] = [];
     let defaultFilter: StationFilter = 'all';
 
-    const FAVORITES_STORAGE_KEY = 'windy-tide-favorites';
     const DEFAULT_FILTER_STORAGE_KEY = 'windy-tide-default-filter';
 
-    const formatTime = (dateString: string): string => {
-        const date = new Date(dateString);
-        return date.toLocaleString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-    };
-
     const loadFavorites = () => {
-        try {
-            const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
-            if (stored) {
-                favoriteStations = JSON.parse(stored);
-            }
-        } catch (error) {
-            console.error('Error loading favorites:', error);
-            favoriteStations = [];
-        }
+        favoriteStations = loadFavoritesStore();
     };
 
     const loadDefaultFilter = () => {
@@ -299,14 +278,6 @@
         }
     };
 
-    const saveFavorites = () => {
-        try {
-            localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favoriteStations));
-        } catch (error) {
-            console.error('Error saving favorites:', error);
-        }
-    };
-
     const updateStationMarker = (stationId: string) => {
         // Find the station
         const station = allStations.find(s => s.id === stationId);
@@ -327,32 +298,26 @@
     };
 
     const toggleFavorite = (stationId: string) => {
-        if (favoriteStations.includes(stationId)) {
-            favoriteStations = favoriteStations.filter(id => id !== stationId);
-        } else {
-            favoriteStations = [...favoriteStations, stationId];
-        }
-        
+        favoriteStations = toggleFavoriteUtil(stationId, favoriteStations);
+
         // Force Svelte reactivity for both arrays
         favoriteStations = favoriteStations;
         if (selectedStation) {
             selectedStation = selectedStation;
         }
-        
-        saveFavorites();
-        
+
+        saveFavoritesStore(favoriteStations);
+
         // Update marker icon immediately
         updateStationMarker(stationId);
-        
+
         // Refresh markers if favorites filter is active
         if (stationFilter === 'favorites') {
             applyStationFilter('favorites');
         }
     };
 
-    const isFavorite = (stationId: string): boolean => {
-        return favoriteStations.includes(stationId);
-    };
+    const isFavorite = (stationId: string): boolean => isFavoriteUtil(stationId, favoriteStations);
 
     const buildPopupContent = (stationName: string, conditions: CurrentConditions | null | undefined): string => {
         let html = `<div style="padding: 5px;"><strong style="color: #36a2eb; font-size: 14px;">${stationName}</strong>`;
@@ -443,25 +408,9 @@
     };
 
     const findNextTides = () => {
-        const now = new Date();
-        nextHighTide = null;
-        nextLowTide = null;
-        
-        for (const tide of tideData) {
-            const tideTime = new Date(tide.time);
-            if (tideTime > now) {
-                if (tide.type === 'H' && !nextHighTide) {
-                    nextHighTide = tide;
-                }
-                if (tide.type === 'L' && !nextLowTide) {
-                    nextLowTide = tide;
-                }
-                
-                if (nextHighTide && nextLowTide) {
-                    break;
-                }
-            }
-        }
+        const upcoming = getNextTides(tideData, 4);
+        nextHighTide = upcoming.find(tide => tide.type === 'H') || null;
+        nextLowTide = upcoming.find(tide => tide.type === 'L') || null;
     };
 
     const fetchStationMetadata = async (stationId: string) => {
@@ -783,16 +732,7 @@
         stationFilter = filter;
         clearMarkers();
 
-        let filteredStations = allStations;
-
-        if (filter === 'primary') {
-            filteredStations = allStations.filter(s => s.stationType === 'R');
-        } else if (filter === 'subordinate') {
-            filteredStations = allStations.filter(s => s.stationType === 'S');
-        } else if (filter === 'favorites') {
-            filteredStations = allStations.filter(s => favoriteStations.includes(s.id));
-        }
-
+        const filteredStations = filterStations(allStations, filter, favoriteStations);
         markers = filteredStations.map(station => createStationMarker(station));
         stationCount = markers.length;
     };
