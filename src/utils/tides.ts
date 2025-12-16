@@ -31,7 +31,7 @@ export const getTideRange = (tideData: TideData[]): { min: number; max: number }
         return { min: 0, max: 0 };
     }
 
-    const heights = tideData.map(t => parseFloat(t.height));
+    const heights = tideData.map(t => Number.parseFloat(t.height));
     return {
         min: Math.min(...heights),
         max: Math.max(...heights),
