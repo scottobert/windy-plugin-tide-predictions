@@ -2,7 +2,7 @@ import type { ExternalPluginConfig } from '@windy/interfaces';
 
 const config: ExternalPluginConfig = {
     name: 'windy-plugin-tide-predictions',
-    version: '0.1.0',
+    version: '0.1.1',
     icon: '🌊',
     title: 'NOAA Tides & Conditions',
     description: 'NOAA tide predictions with next highs/lows plus current water level, water/air temperature, currents, and wind.',
